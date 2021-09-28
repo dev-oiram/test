@@ -49,3 +49,43 @@ class Player {
 
     getNode() { return this.node }
 }
+
+
+class Ball {
+    constructor(id,app,color) {
+        this.ref = app
+        this.speed = 6
+        this.velocityX = 6
+        this.velocityY = 6
+        this.initial = {
+            id : id,
+            width  : app.width/30,
+            height : app.height/25,
+            x  : app.width/2,
+            y  : app.height/2,
+            color  : color
+        }
+        app.nodes.push(this.initial)
+        this.node = app.getNode(this.initial.id)
+    }
+
+    reset() {
+        this.node.x = this.app.width/2
+        this.node.y = this.app.height/2
+        this.speed = 6
+    }
+
+    update(deltatime) {
+        if(deltatime < 2){
+            this.node.x += this.velocityX * deltatime
+            this.node.y += this.velocityY * deltatime
+        }
+
+        // Change the ball direction when collide with top and botton border
+        if(this.node.y + (this.node.height/2) > this.ref.height || this.node.y - (this.node.height/2) < 0) {
+            this.velocityY = -this.velocityY
+        }
+    }
+
+    getNode() { return this.node }
+}

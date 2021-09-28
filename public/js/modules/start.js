@@ -11,6 +11,9 @@ document.body.style.overflow = 'hidden'; // <-- relevant addition
 var PlayerOne = new Player('player-one',app,'blue',1)
 var PlayerTwo = new Player('player-two',app,'red',2)
 
+var ball = new Ball('ball',app,'black')
+
+
 app.onInit = function(){
 
     document.addEventListener('keydown', (event) => {
@@ -47,4 +50,6 @@ app.onUpdate = function(time){
 
     PlayerOne.update(deltatime)
     PlayerTwo.update(deltatime)
+
+    ball.update(deltatime)
 };
