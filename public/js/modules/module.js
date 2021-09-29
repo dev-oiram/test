@@ -70,9 +70,10 @@ class Ball {
     }
 
     reset() {
-        this.node.x = this.app.width/2
-        this.node.y = this.app.height/2
+        this.node.x = this.ref.width/2
+        this.node.y = this.ref.height/2
         this.speed = 6
+        this.velocityX = -this.velocityX
     }
 
     update(deltatime) {
@@ -84,6 +85,13 @@ class Ball {
         // Change the ball direction when collide with top and botton border
         if(this.node.y + (this.node.height/2) > this.ref.height || this.node.y - (this.node.height/2) < 0) {
             this.velocityY = -this.velocityY
+        }
+
+        // Reset Ball when collide with left and right border
+        if(this.node.x < 0) {
+            this.reset()
+        }else if(this.node.x > this.ref.width) {
+            this.reset()
         }
     }
 

@@ -52,4 +52,43 @@ app.onUpdate = function(time){
     PlayerTwo.update(deltatime)
 
     ball.update(deltatime)
+
+    if(collision(ball.getNode(),PlayerOne.getNode())){
+        changeDirection(ball,PlayerOne,app)
+    }
+    if(collision(ball.getNode(),PlayerTwo.getNode())){
+        changeDirection(ball,PlayerTwo,app)
+    }
 };
+
+function collision(ball,player) {
+    // Check for collision between ball and player
+    let pTop = player.y
+    let pBottom = (player.y) + player.height
+    let pLeft = player.x
+    let pRight = (player.x) + player.width
+
+    let bTop = ball.y
+    let bBottom = (ball.y) + ball.height
+    let bLeft = ball.x
+    let bRight = (ball.x) + ball.width
+
+    // boolean for collision
+    return bRight > pLeft && bTop < pBottom && bLeft < pRight && bBottom > pTop
+}
+
+// Change ball direction once it collides with player
+function changeDirection(ball,player,app) {
+    let collideHit = ball.getNode().y - (player.getNode().y + player.getNode().height / 2)
+    collideHit = collideHit / (player.getNode().height / 2)
+    let angle = (Math.PI/4) * collideHit
+
+    let direction = -1
+    if(ball.getNode().x < app.width/2){
+        direction = 1
+    }
+    ball.velocityX = direction * ball.speed * Math.cos(angle)
+    ball.velocityY = direction * ball.speed * Math.sin(angle)
+
+    ball.speed += 0.5
+}
