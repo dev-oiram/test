@@ -39,8 +39,14 @@ var app = {
 		for(var index in this.nodes){
 			var node = this.nodes[index];
 
-			this.context.fillStyle = node.color;
-			this.context.fillRect(node.x, node.y, node.width, node.height);
+			// Create new node for Text
+			if(node.istext) {
+				this.context.font = node.size+'px serif';
+  				this.context.fillText(node.text, node.x, node.y);
+			}else {
+				this.context.fillStyle = node.color;
+				this.context.fillRect(node.x, node.y, node.width, node.height);
+			}
 		}
 
 		this.lastUpdate = Date.now();
@@ -60,7 +66,9 @@ var app = {
 
 	//events
 	onInit   : function(){},
-	onUpdate : function(){}
+	onUpdate : function(){},
+	pause : function() {},
+	reset: function() {}
 };
 
 window.onload = function(){
