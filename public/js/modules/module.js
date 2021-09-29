@@ -1,4 +1,5 @@
 
+// Node Player class
 class Player {
     constructor(id,app,color,playerNum) {
         this.speed = 5
@@ -51,6 +52,7 @@ class Player {
 }
 
 
+// Node ball class
 class Ball {
     constructor(id,app,color) {
         this.ref = app
@@ -67,9 +69,20 @@ class Ball {
         }
         app.nodes.push(this.initial)
         this.node = app.getNode(this.initial.id)
+
+        this.score = {
+            one: 0,
+            two: 0
+        }
     }
 
-    reset() {
+    reset(resetGame) {
+        if(resetGame){
+            this.score = {
+                one: 0,
+                two: 0
+            }
+        }
         this.node.x = this.ref.width/2
         this.node.y = this.ref.height/2
         this.speed = 6
@@ -87,13 +100,38 @@ class Ball {
             this.velocityY = -this.velocityY
         }
 
-        // Reset Ball when collide with left and right border
+        // Reset Ball when collide with left or right border to set score
         if(this.node.x < 0) {
-            this.reset()
+            this.score.one ++
+            this.reset(false)
         }else if(this.node.x > this.ref.width) {
-            this.reset()
+            this.score.two ++
+            this.reset(false)
         }
     }
 
     getNode() { return this.node }
+}
+
+// Node text class
+class Text {
+    constructor(id,x,y,size,text,app) {
+        this.ref = app
+        this.initial = {
+            id : id,
+            size : size,
+            x  : x,
+            y  : y,
+            text  : text,
+            istext : true
+        }
+        app.nodes.push(this.initial)
+        this.node = this.ref.getNode(this.initial.id)
+    }
+
+    setText(text) {
+        this.node.text = text
+    }
+
+    getText() { return this.node } // Return text node
 }

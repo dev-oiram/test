@@ -13,6 +13,9 @@ var PlayerTwo = new Player('player-two',app,'red',2)
 
 var ball = new Ball('ball',app,'black')
 
+var player1Score = new Text('score-one',app.width / 4,100,50,"0",app)
+var player2Score = new Text('score-two',(app.width/4) * 3,100,50,"0",app)
+
 
 app.onInit = function(){
 
@@ -52,6 +55,8 @@ app.onUpdate = function(time){
     PlayerTwo.update(deltatime)
 
     ball.update(deltatime)
+    player1Score.setText(ball.score.one)
+    player2Score.setText(ball.score.two)
 
     if(collision(ball.getNode(),PlayerOne.getNode())){
         changeDirection(ball,PlayerOne,app)
