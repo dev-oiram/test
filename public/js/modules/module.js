@@ -2,6 +2,7 @@
 // Node Player class
 class Player {
     constructor(id,app,color,playerNum) {
+        this.initialY = app.height/2
         this.speed = 5
         this.move = {
             up : false,
@@ -19,7 +20,7 @@ class Player {
             width  : app.width/20,
             height : app.height/4,
             x  : x,
-            y  : app.height/2,
+            y  : this.initialY,
             color  : color
         }
         app.nodes.push(this.initial)
@@ -27,7 +28,7 @@ class Player {
     }
 
     reset() {
-        this.node.y = this.initial.y
+        this.node.y = this.initialY
     }
 
     moveUp(state) {

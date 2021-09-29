@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById("canvas");
 // Set canvas and app full screen
 canvas.width = window.innerWidth
@@ -13,9 +14,13 @@ var PlayerTwo = new Player('player-two',app,'red',2)
 
 var ball = new Ball('ball',app,'black')
 
-var player1Score = new Text('score-one',app.width / 4,100,50,"0",app)
-var player2Score = new Text('score-two',(app.width/4) * 3,100,50,"0",app)
+var player1Score = new Text('score-two',(app.width/4) * 3, app.height / 4,50,"0",app)
+var player2Score = new Text('score-one',app.width / 4, app.height / 4,50,"0",app)
+var startText = new Text('start',app.width/2, app.height - 50, 50,"Press 'Enter' to Start",app)
+var pauseText = new Text('pause',app.width/2, app.height - 50,50,"",app)
+var pauseInst = new Text('pauseInst',app.width/2, app.height - 25,25,"",app)
 
+var state = 'START'
 
 app.onInit = function(){
 
@@ -45,12 +50,67 @@ app.onInit = function(){
         if(keyName == 'ArrowDown')
             PlayerTwo.moveDown(false)
         
+        if(keyName == 'Enter'){
+            if(state == 'START')
+                state = 'GAME'
+        }
+
+        if(keyName == ' '){
+            if(state == 'GAME' || state == 'PAUSE')
+                this.pause()
+        }
+
+        if(keyName == 'r'){
+            if(state == 'PAUSE')
+                this.reset()
+        }
     })
 };
 
 app.onUpdate = function(time){
     let deltatime = time / (1000/60) //Run 60 frames per second (1000ms)
 
+    switch(state) {
+        case 'START':
+            break;
+        
+        case 'GAME':
+            startText.setText("")
+            gameRuning(deltatime)
+            break
+        
+        case 'PAUSE':
+            break
+    }
+    
+};
+
+app.pause = function(){
+    if(state == 'GAME'){
+        state = 'PAUSE'
+        pauseText.setText("Pause")
+        pauseInst.setText("press 'R' for reset")
+    }
+    else{
+        state = 'GAME'
+        pauseText.setText("")
+        pauseInst.setText("")
+    }
+}
+
+app.reset = function(){
+    PlayerOne.reset()
+    PlayerTwo.reset()
+    player1Score.setText("0")
+    player2Score.setText("0")
+    ball.reset(true)
+    state = 'START'
+    pauseText.setText("")
+    pauseInst.setText("")
+    startText.setText("Press 'Enter' to Start")
+}
+
+function gameRuning(deltatime) {
     PlayerOne.update(deltatime)
     PlayerTwo.update(deltatime)
 
@@ -64,7 +124,7 @@ app.onUpdate = function(time){
     if(collision(ball.getNode(),PlayerTwo.getNode())){
         changeDirection(ball,PlayerTwo,app)
     }
-};
+}
 
 function collision(ball,player) {
     // Check for collision between ball and player
