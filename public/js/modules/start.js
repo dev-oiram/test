@@ -31,6 +31,7 @@ var state = 'START'
  */
 var music = new Sound('sounds/level1.wav', true)
 
+
 // Init
 app.onInit = function(){
 
@@ -159,6 +160,7 @@ function collision(ball,player) {
 
 // Change ball direction once it collides with player
 function changeDirection(ball,player,app) {
+    ball.playBounce() // Play Ball bounce
     let collideHit = ball.getNode().y - (player.getNode().y + player.getNode().height / 2)
     collideHit = collideHit / (player.getNode().height / 2)
     let angle = (Math.PI/4) * collideHit

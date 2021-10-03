@@ -74,6 +74,12 @@ class RoundBall {
             one: 0,
             two: 0
         }
+
+        /**
+        * Download from https://pixabay.com/sound-effects/
+        */
+        this.bounce = new Sound('sounds/metal-hit-cartoon.mp3', false)
+        this.scoreSound = new Sound('sounds/8-bit-powerup.mp3', false)
     }
 
     reset(resetGame) {
@@ -91,6 +97,10 @@ class RoundBall {
         this.velocityX = -this.velocityX
     }
 
+    playBounce() {
+        this.bounce.play()
+    }
+
     update(deltatime) {
         if(deltatime < 2){
             this.node.x += this.velocityX * deltatime
@@ -99,14 +109,17 @@ class RoundBall {
 
         // Change the ball direction when collide with top and botton border
         if(this.node.y + this.node.r > this.ref.height || this.node.y - this.node.r < 0) {
+            this.playBounce() // Play Ball bounce
             this.velocityY = -this.velocityY
         }
 
         // Reset Ball when collide with left or right border to set score
         if(this.node.x < 0) {
+            this.scoreSound.play()
             this.score.one ++
             this.reset(false)
         }else if(this.node.x > this.ref.width) {
+            this.scoreSound.play()
             this.score.two ++
             this.reset(false)
         }
@@ -163,12 +176,15 @@ class Sound {
         this.sound.src = src;
         this.sound.setAttribute("preload", "auto");
         this.sound.setAttribute("controls", "none");
-        this.sound.setAttribute("loop", loop)
+        if(loop) {
+            this.sound.setAttribute("loop", loop)
+        }
         this.sound.style.display = "none";
         document.body.appendChild(this.sound);
     }
 
     play() {
+        this.sound.currentTime = 0
         this.sound.play()
     }
 
