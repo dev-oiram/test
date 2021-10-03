@@ -12,7 +12,6 @@ document.body.style.overflow = 'hidden'; // <-- relevant addition
 var PlayerOne = new Player('player-one',app,'blue',1)
 var PlayerTwo = new Player('player-two',app,'red',2)
 
-var ball = new Ball('ball',app,'black')
 var roundBall = new RoundBall('roundball',app,'green')
 
 var player1Score = new Text('score-two',(app.width/4) * 3, app.height / 4,50,"0",app)
@@ -104,7 +103,6 @@ app.reset = function(){
     PlayerTwo.reset()
     player1Score.setText("0")
     player2Score.setText("0")
-    // ball.reset(true)
     roundBall.reset(true)
     state = 'START'
     pauseText.setText("")
@@ -116,7 +114,6 @@ function gameRuning(deltatime) {
     PlayerOne.update(deltatime)
     PlayerTwo.update(deltatime)
 
-    // ball.update(deltatime)
     roundBall.update(deltatime)
     player1Score.setText(roundBall.score.one)
     player2Score.setText(roundBall.score.two)
