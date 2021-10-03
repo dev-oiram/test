@@ -41,7 +41,6 @@ var app = {
 
 			// Create new node for Text
 			if(node.istext) {
-				this.context.fillStyle = 'black';
 				this.context.font = node.size+'px serif';
   				this.context.fillText(node.text, node.x, node.y);
 			}else {

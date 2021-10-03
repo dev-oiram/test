@@ -9,16 +9,19 @@ app.height = window.innerHeight
 document.body.scrollTop = 0; // <-- pull the page back up to the top
 document.body.style.overflow = 'hidden'; // <-- relevant addition
 
+var net = new Net('net',app,'orange')
+
 var PlayerOne = new Player('player-one',app,'blue',1)
 var PlayerTwo = new Player('player-two',app,'red',2)
 
 var roundBall = new RoundBall('roundball',app,'green')
 
+var mainText = 50, secondText = 25;
 var player1Score = new Text('score-two',(app.width/4) * 3, app.height / 4,50,"0",app)
 var player2Score = new Text('score-one',app.width / 4, app.height / 4,50,"0",app)
-var startText = new Text('start',app.width/2, app.height - 50, 50,"Press 'Enter' to Start",app)
-var pauseText = new Text('pause',app.width/2, app.height - 50,50,"",app)
-var pauseInst = new Text('pauseInst',app.width/2, app.height - 25,25,"",app)
+var startText = new Text('start',app.width/2 + (mainText/2), app.height - 50, mainText,"Press 'Enter' to Start",app)
+var pauseText = new Text('pause',app.width/2 + (mainText/2), app.height - 50, mainText,"",app)
+var pauseInst = new Text('pauseInst',app.width/2 + (secondText/2), app.height - 25, secondText,"",app)
 
 var state = 'START'
 

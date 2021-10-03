@@ -56,7 +56,7 @@ class Player {
 class RoundBall {
     constructor(id,app,color) {
         this.ref = app
-        this.speed = 8
+        this.speed = 10
         this.velocityX = 7
         this.velocityY = 7
         this.initial = {
@@ -85,7 +85,7 @@ class RoundBall {
         }
         this.node.x = this.ref.width/2
         this.node.y = this.ref.height/2
-        this.speed = 8
+        this.speed = 10
         this.velocityX = 7
         this.velocityY = 7
         this.velocityX = -this.velocityX
@@ -137,4 +137,21 @@ class Text {
     }
 
     getText() { return this.node } // Return text node
+}
+
+
+// Node Net class
+class Net {
+    constructor(id,app,color) {
+        this.initial = {
+            id : id,
+            width  : 20,
+            height : app.height,
+            x  : app.width/2 - (10),
+            y  : 0,
+            color  : color
+        }
+        app.nodes.push(this.initial)
+        this.node = app.getNode(this.initial.id)
+    }
 }
