@@ -6,6 +6,7 @@ var app = {
 	//resizing
 	width   : 800,
 	height  : 400,
+	background : new Image(),
 
 	//nodes
 	nodes   : [],
@@ -18,6 +19,12 @@ var app = {
 	init : function(){
 		this.canvas  = document.getElementById('canvas');
 		this.context = this.canvas.getContext('2d');
+
+		/**
+		 * Download from:
+		 * https://pixabay.com/es/photos/madera-piso-fondo-antecedentes-1866667
+		 */
+		this.background.src = "images/wood.jpg";
 
 		this.render();
 		this.onInit();
@@ -35,12 +42,14 @@ var app = {
 	    var dt = Date.now() - this.lastUpdate;
 
 		this.onUpdate(dt);
+		this.context.drawImage(this.background,0,0);
 
 		for(var index in this.nodes){
 			var node = this.nodes[index];
 
 			// Create new node for Text
 			if(node.istext) {
+				this.context.fillStyle = 'black'
 				this.context.font = node.size+'px serif';
   				this.context.fillText(node.text, node.x, node.y);
 			}else {

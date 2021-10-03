@@ -3,17 +3,17 @@
 class Player {
     constructor(id,app,color,playerNum) {
         this.initialY = app.height/2
-        this.speed = 8
+        this.speed = 10
         this.move = {
             up : false,
             down : false
         }
         let x = 0
         if(playerNum == 1) {
-            x = app.width/20 - (app.width/20) // Player One position
+            x = app.width/20 // Player One position
         }
         if(playerNum == 2) {
-            x = (app.width) - (app.width/20) // Player Two position
+            x = app.width - (app.width/20*2) // Player Two position
         }
         this.initial = {
             id : id,
@@ -57,8 +57,8 @@ class RoundBall {
     constructor(id,app,color) {
         this.ref = app
         this.speed = 10
-        this.velocityX = 7
-        this.velocityY = 7
+        this.velocityX = 8
+        this.velocityY = 8
         this.initial = {
             id : id,
             r : 15, // Ball Radius
@@ -92,8 +92,8 @@ class RoundBall {
         this.node.x = this.ref.width/2
         this.node.y = this.ref.height/2
         this.speed = 10
-        this.velocityX = 7
-        this.velocityY = 7
+        this.velocityX = 8
+        this.velocityY = 8
         this.velocityX = -this.velocityX
     }
 
@@ -180,6 +180,7 @@ class Sound {
             this.sound.setAttribute("loop", loop)
         }
         this.sound.style.display = "none";
+        this.sound.volume = 0.2
         document.body.appendChild(this.sound);
     }
 
