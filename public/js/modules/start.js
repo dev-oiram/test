@@ -25,6 +25,13 @@ var pauseInst = new Text('pauseInst',app.width/2 + (secondText/2), app.height - 
 
 var state = 'START'
 
+/**
+ * Add Game Music Level1.wav
+ * Created by https://juhanijunkala.com/
+ */
+var music = new Sound('sounds/level1.wav', true)
+
+// Init
 app.onInit = function(){
 
     document.addEventListener('keydown', (event) => {
@@ -54,13 +61,16 @@ app.onInit = function(){
             PlayerTwo.moveDown(false)
         
         if(keyName == 'Enter'){
-            if(state == 'START')
+            if(state == 'START'){
+                music.play() // Start Game Music
                 state = 'GAME'
+            }
         }
 
         if(keyName == ' '){
-            if(state == 'GAME' || state == 'PAUSE')
+            if(state == 'GAME' || state == 'PAUSE'){
                 this.pause()
+            }
         }
 
         if(keyName == 'r'){
@@ -90,11 +100,13 @@ app.onUpdate = function(time){
 
 app.pause = function(){
     if(state == 'GAME'){
+        music.pause() // Pause Game Music
         state = 'PAUSE'
         pauseText.setText("Pause")
         pauseInst.setText("press 'R' for reset")
     }
     else{
+        music.play() // Resume Game Music
         state = 'GAME'
         pauseText.setText("")
         pauseInst.setText("")
