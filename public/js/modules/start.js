@@ -13,6 +13,7 @@ var PlayerOne = new Player('player-one',app,'blue',1)
 var PlayerTwo = new Player('player-two',app,'red',2)
 
 var ball = new Ball('ball',app,'black')
+var roundBall = new RoundBall('roundball',app,'green')
 
 var player1Score = new Text('score-two',(app.width/4) * 3, app.height / 4,50,"0",app)
 var player2Score = new Text('score-one',app.width / 4, app.height / 4,50,"0",app)
@@ -103,7 +104,8 @@ app.reset = function(){
     PlayerTwo.reset()
     player1Score.setText("0")
     player2Score.setText("0")
-    ball.reset(true)
+    // ball.reset(true)
+    roundBall.reset(true)
     state = 'START'
     pauseText.setText("")
     pauseInst.setText("")
@@ -114,15 +116,16 @@ function gameRuning(deltatime) {
     PlayerOne.update(deltatime)
     PlayerTwo.update(deltatime)
 
-    ball.update(deltatime)
-    player1Score.setText(ball.score.one)
-    player2Score.setText(ball.score.two)
+    // ball.update(deltatime)
+    roundBall.update(deltatime)
+    player1Score.setText(roundBall.score.one)
+    player2Score.setText(roundBall.score.two)
 
-    if(collision(ball.getNode(),PlayerOne.getNode())){
-        changeDirection(ball,PlayerOne,app)
+    if(collision(roundBall.getNode(),PlayerOne.getNode())){
+        changeDirection(roundBall,PlayerOne,app)
     }
-    if(collision(ball.getNode(),PlayerTwo.getNode())){
-        changeDirection(ball,PlayerTwo,app)
+    if(collision(roundBall.getNode(),PlayerTwo.getNode())){
+        changeDirection(roundBall,PlayerTwo,app)
     }
 }
 
@@ -133,10 +136,10 @@ function collision(ball,player) {
     let pLeft = player.x
     let pRight = (player.x) + player.width
 
-    let bTop = ball.y
-    let bBottom = (ball.y) + ball.height
-    let bLeft = ball.x
-    let bRight = (ball.x) + ball.width
+    let bTop = ball.y - ball.r
+    let bBottom = (ball.y) + ball.r
+    let bLeft = ball.x - ball.r
+    let bRight = (ball.x) + ball.r
 
     // boolean for collision
     return bRight > pLeft && bTop < pBottom && bLeft < pRight && bBottom > pTop
@@ -155,5 +158,5 @@ function changeDirection(ball,player,app) {
     ball.velocityX = direction * ball.speed * Math.cos(angle)
     ball.velocityY = direction * ball.speed * Math.sin(angle)
 
-    ball.speed += 0.5
+    ball.speed += 1
 }

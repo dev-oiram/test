@@ -3,7 +3,7 @@
 class Player {
     constructor(id,app,color,playerNum) {
         this.initialY = app.height/2
-        this.speed = 5
+        this.speed = 7
         this.move = {
             up : false,
             down : false
@@ -47,6 +47,69 @@ class Player {
          if(this.move.down) {
             this.node.y += this.speed * delta
          }
+    }
+
+    getNode() { return this.node }
+}
+
+// Node RoundBall class
+class RoundBall {
+    constructor(id,app,color) {
+        this.ref = app
+        this.speed = 8
+        this.velocityX = 7
+        this.velocityY = 7
+        this.initial = {
+            id : id,
+            r : 15, // Ball Radius
+            x  : app.width/2,
+            y  : app.height/2,
+            color  : color,
+            isball: true
+        }
+        app.nodes.push(this.initial)
+        this.node = app.getNode(this.initial.id)
+
+        this.score = {
+            one: 0,
+            two: 0
+        }
+    }
+
+    reset(resetGame) {
+        if(resetGame){
+            this.score = {
+                one: 0,
+                two: 0
+            }
+        }
+        this.node.x = this.ref.width/2
+        this.node.y = this.ref.height/2
+        this.speed = 8
+        this.velocityX = 7
+        this.velocityY = 7
+        this.velocityX = -this.velocityX
+    }
+
+    update(deltatime) {
+        if(deltatime < 2){
+            this.node.x += this.velocityX * deltatime
+            this.node.y += this.velocityY * deltatime
+        }
+
+        // Change the ball direction when collide with top and botton border
+        if(this.node.y + this.node.r > this.ref.height || this.node.y - this.node.r < 0) {
+            this.velocityY = -this.velocityY
+        }
+
+        // Reset Ball when collide with left or right border to set score
+        if(this.node.x < 0) {
+            this.score.one ++
+            this.reset(false)
+        }else if(this.node.x > this.ref.width) {
+            this.score.two ++
+            this.reset(false)
+        }
     }
 
     getNode() { return this.node }

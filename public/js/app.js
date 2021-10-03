@@ -41,11 +41,20 @@ var app = {
 
 			// Create new node for Text
 			if(node.istext) {
+				this.context.fillStyle = 'black';
 				this.context.font = node.size+'px serif';
   				this.context.fillText(node.text, node.x, node.y);
 			}else {
-				this.context.fillStyle = node.color;
-				this.context.fillRect(node.x, node.y, node.width, node.height);
+				if(node.isball) {
+					this.context.fillStyle = node.color;
+					this.context.beginPath();
+					this.context.arc(node.x, node.y, node.r, 0, Math.PI * 2);
+					this.context.closePath();
+					this.context.fill()
+				}else {
+					this.context.fillStyle = node.color;
+					this.context.fillRect(node.x, node.y, node.width, node.height);
+				}
 			}
 		}
 
