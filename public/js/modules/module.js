@@ -3,17 +3,17 @@
 class Player {
     constructor(id,app,color,playerNum) {
         this.initialY = app.height/2
-        this.speed = 5
+        this.speed = 9
         this.move = {
             up : false,
             down : false
         }
         let x = 0
         if(playerNum == 1) {
-            x = app.width/20 - (app.width/20) // Player One position
+            x = app.width/20 // Player One position
         }
         if(playerNum == 2) {
-            x = (app.width) - (app.width/20) // Player Two position
+            x = app.width - (app.width/20*2) // Player Two position
         }
         this.initial = {
             id : id,
@@ -28,6 +28,7 @@ class Player {
     }
 
     reset() {
+        this.speed = 9
         this.node.y = this.initialY
     }
 
@@ -52,21 +53,22 @@ class Player {
     getNode() { return this.node }
 }
 
-
-// Node ball class
-class Ball {
-    constructor(id,app,color) {
+// Node RoundBall class
+class RoundBall {
+    constructor(id,app,color,playerOne,playerTwo) {
+        this.p1 = playerOne
+        this.p2 = playerTwo
         this.ref = app
-        this.speed = 6
-        this.velocityX = 6
-        this.velocityY = 6
+        this.speed = 10
+        this.velocityX = 8
+        this.velocityY = 8
         this.initial = {
             id : id,
-            width  : app.width/30,
-            height : app.height/25,
+            r : 15, // Ball Radius
             x  : app.width/2,
             y  : app.height/2,
-            color  : color
+            color  : color,
+            isball: true
         }
         app.nodes.push(this.initial)
         this.node = app.getNode(this.initial.id)
@@ -75,6 +77,12 @@ class Ball {
             one: 0,
             two: 0
         }
+
+        /**
+        * Download from https://pixabay.com/sound-effects/
+        */
+        this.bounce = new Sound('sounds/metal-hit-cartoon.mp3', false)
+        this.scoreSound = new Sound('sounds/8-bit-powerup.mp3', false)
     }
 
     reset(resetGame) {
@@ -86,8 +94,16 @@ class Ball {
         }
         this.node.x = this.ref.width/2
         this.node.y = this.ref.height/2
-        this.speed = 6
+        this.speed = 10
+        this.velocityX = 8
+        this.velocityY = 8
         this.velocityX = -this.velocityX
+        this.p1.speed = 9
+        this.p2.speed = 9
+    }
+
+    playBounce() {
+        this.bounce.play()
     }
 
     update(deltatime) {
@@ -97,15 +113,18 @@ class Ball {
         }
 
         // Change the ball direction when collide with top and botton border
-        if(this.node.y + (this.node.height/2) > this.ref.height || this.node.y - (this.node.height/2) < 0) {
+        if(this.node.y + this.node.r > this.ref.height || this.node.y - this.node.r < 0) {
+            this.playBounce() // Play Ball bounce
             this.velocityY = -this.velocityY
         }
 
         // Reset Ball when collide with left or right border to set score
         if(this.node.x < 0) {
+            this.scoreSound.play()
             this.score.one ++
             this.reset(false)
         }else if(this.node.x > this.ref.width) {
+            this.scoreSound.play()
             this.score.two ++
             this.reset(false)
         }
@@ -113,6 +132,7 @@ class Ball {
 
     getNode() { return this.node }
 }
+
 
 // Node text class
 class Text {
@@ -135,4 +155,47 @@ class Text {
     }
 
     getText() { return this.node } // Return text node
+}
+
+
+// Node Net class
+class Net {
+    constructor(id,app,color) {
+        this.initial = {
+            id : id,
+            width  : 20,
+            height : app.height,
+            x  : app.width/2 - (10),
+            y  : 0,
+            color  : color
+        }
+        app.nodes.push(this.initial)
+        this.node = app.getNode(this.initial.id)
+    }
+}
+
+// Sound Class
+class Sound {
+    constructor(src,loop) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        if(loop) {
+            this.sound.setAttribute("loop", loop)
+        }
+        this.sound.style.display = "none";
+        this.sound.volume = 0.2
+        document.body.appendChild(this.sound);
+    }
+
+    play() {
+        this.sound.currentTime = 0
+        this.sound.play()
+    }
+
+    pause() {
+        this.sound.pause()
+        this.sound.currentTime = 0
+    }
 }
