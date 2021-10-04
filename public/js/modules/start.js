@@ -14,7 +14,7 @@ var net = new Net('net',app,'orange')
 var PlayerOne = new Player('player-one',app,'blue',1)
 var PlayerTwo = new Player('player-two',app,'red',2)
 
-var roundBall = new RoundBall('roundball',app,'white')
+var roundBall = new RoundBall('roundball',app,'white',PlayerOne,PlayerTwo)
 
 var mainText = 50, secondText = 25;
 var player1Score = new Text('score-two',(app.width/4) * 3, app.height / 4, mainText*1.5,"0",app)
@@ -173,4 +173,5 @@ function changeDirection(ball,player,app) {
     ball.velocityY = direction * ball.speed * Math.sin(angle)
 
     ball.speed += 1
+    player.speed += 1
 }

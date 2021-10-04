@@ -3,7 +3,7 @@
 class Player {
     constructor(id,app,color,playerNum) {
         this.initialY = app.height/2
-        this.speed = 10
+        this.speed = 9
         this.move = {
             up : false,
             down : false
@@ -28,6 +28,7 @@ class Player {
     }
 
     reset() {
+        this.speed = 9
         this.node.y = this.initialY
     }
 
@@ -54,7 +55,9 @@ class Player {
 
 // Node RoundBall class
 class RoundBall {
-    constructor(id,app,color) {
+    constructor(id,app,color,playerOne,playerTwo) {
+        this.p1 = playerOne
+        this.p2 = playerTwo
         this.ref = app
         this.speed = 10
         this.velocityX = 8
@@ -95,6 +98,8 @@ class RoundBall {
         this.velocityX = 8
         this.velocityY = 8
         this.velocityX = -this.velocityX
+        this.p1.speed = 9
+        this.p2.speed = 9
     }
 
     playBounce() {
